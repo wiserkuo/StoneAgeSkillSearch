@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>StoneAge - SkillExpert</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+          <!--jsontest-->
+          <h2 id="petinfo"></h2>
+          
+          <div class="row" id="demo"></div>
+          
+          <h2>Get data as JSON from a PHP file on the server.</h2>
+          
+          <p>The JSON received from the PHP file,:</p>
+          
+          <p id="demodatabase"></p>
+          
+          <script>
+          
+          var xmlhttp = new XMLHttpRequest();
+          
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  myObj = JSON.parse(this.responseText);
+                  
+                  document.getElementById("petinfo").innerHTML = "Here you go! For 1~10";
+                  //document.getElementById("demo").innerHTML = "<div class='row'>";
+                                                            
+                  for (i=0 ; i < Object.keys(myObj.result).length; i++) { 
+                      document.getElementById("demo").innerHTML +="<div class='col-sm-12 col-md-6 col-lg-3'><p>寵物名："+myObj["result"][i]["pet_name"]+
+                                                                  "</p><p>主動技耗氣："+myObj["result"][i]["mp_skill1"]+
+                                                                  "</p><p>主動技："+myObj["result"][i]["skill1"]+
+                                                                  "</p><p>被動技1："+myObj["result"][i]["skill2"]+
+                                                                  "</p><p>被動技2："+myObj["result"][i]["skill3"]+
+                                                                  "</p><p>被動技3："+myObj["result"][i]["skill4"]+
+                                                                  "</p></div>";
+                      
+                  }
+                  //document.getElementById("demo").innerHTML += "</div>";
+                  //document.getElementById("demo").innerHTML += myObj["name"]["stan"];
+                  // document.getElementByClassName("")
+              }
+          };
+          xmlhttp.open("GET", "skill_report.php", true);
+          xmlhttp.send();
+          
+          //DATABASE test limit=3
+
+          var obj, dbParam, xmlhttp2, myObj, x, txt = "";
+          obj = { "table":"stoneage_skill", "limit":3 };
+          dbParam = JSON.stringify(obj);
+          xmlhttp2 = new XMLHttpRequest();
+          xmlhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+                  document.getElementById("demodatabase").innerHTML = this.responseText;
+              }
+          };
+          xmlhttp2.open("GET", "skill_report.php?x=" + dbParam, true);
+          xmlhttp2.send();
+          //End of DATABASE test
+          
+          </script>
+          <!--end of jsontest-->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
